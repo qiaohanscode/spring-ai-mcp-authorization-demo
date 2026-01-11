@@ -30,6 +30,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.netty.handler.logging.LogLevel;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+
 @SpringBootApplication
 public class McpServletWebfluxClientApplication {
 
@@ -49,7 +54,12 @@ public class McpServletWebfluxClientApplication {
 	 */
 	@Bean
 	WebClient.Builder webClientBuilder(McpSyncClientExchangeFilterFunction filterFunction) {
-		return WebClient.builder().apply(filterFunction.configuration());
+		// Enable Reactor Netty wiretap to log full HTTP request/response including bodies
+		HttpClient httpClient = HttpClient.create()
+			.wiretap("reactor.netty.http.client", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
+		return WebClient.builder()
+			.clientConnector(new ReactorClientHttpConnector(httpClient))
+			.apply(filterFunction.configuration());
 	}
 
 	@Bean

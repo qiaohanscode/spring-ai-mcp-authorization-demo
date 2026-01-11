@@ -50,7 +50,8 @@ public class SpringSyncTokenSupplier {
 	// spring.security.oauth2.client.registration.<REGISTRATION-ID>.authorization-grant-type=client_credentials
 	private static final String CLIENT_CREDENTIALS_CLIENT_REGISTRATION_ID = "authserver-client-credentials";
 
-	// Hardcoded "anonymous" authentication, to match the Spring Security API.
+	// Har
+	// dcoded "anonymous" authentication, to match the Spring Security API.
 	private static final AnonymousAuthenticationToken ANONYMOUS_AUTHENTICATION = new AnonymousAuthenticationToken(
 			"client-credentials-client", "client-credentials-client",
 			AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
